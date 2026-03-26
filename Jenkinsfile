@@ -47,24 +47,24 @@ pipeline {
                     if (branch == 'main') {
                         echo 'Deploying to MAIN environment...'
                         sh '''
-                            sudo rm -rf /var/www/main/*
-                            sudo cp -r * /var/www/main/
+                            sudo rm -rf /var/www/myapp/main/*
+                            sudo cp -r * /var/www/myapp/main/
                         '''
                         echo 'Main branch deployed successfully!'
                     }
                     else if (branch == 'dev') {
                         echo 'Deploying to DEV environment...'
                         sh '''
-                            sudo rm -rf /var/www/dev/*
-                            sudo cp -r * /var/www/dev/
+                            sudo rm -rf /var/www/myapp/dev/*
+                            sudo cp -r * /var/www/myapp/dev/
                         '''
                         echo 'Dev branch deployed successfully!'
                     }
                     else if (branch == 'feature') {
                         echo 'Deploying to FEATURE environment...'
                         sh '''
-                            sudo rm -rf /var/www/feature/*
-                            sudo cp -r * /var/www/feature/
+                            sudo rm -rf /var/www/myapp/feature/*
+                            sudo cp -r * /var/www/myapp/feature/
                         '''
                         echo 'Feature branch deployed successfully!'
                     }
