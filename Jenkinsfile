@@ -1,20 +1,16 @@
 pipeline {
     agent any
-
     stages {
-
         stage('Clean') {
             steps {
                 deleteDir()
             }
         }
-
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-
         stage('Build') {
             steps {
                 script {
@@ -23,7 +19,6 @@ pipeline {
                 }
             }
         }
-
         stage('Test') {
             steps {
                 script {
@@ -32,14 +27,11 @@ pipeline {
                 }
             }
         }
-
         stage('Deploy') {
             steps {
                 script {
                     def branch = env.GIT_BRANCH?.replaceAll('origin/', '').trim()
-
                     echo "Detected branch: ${branch}"
-
                     if (branch == 'main') {
                         echo 'Deploying to MAIN environment...'
                         sh '''
@@ -70,18 +62,9 @@ pipeline {
                 }
             }
         }
-
-
-    post {
-        success {
-            echo "Pipeline succeeded for branch: ${env.GIT_BRANCH}"
-        }
-        failure {
-            echo "Pipeline FAILED for branch: ${env.GIT_BRANCH}"
-        }
-        always {
-            echo "Pipeline finished. Branch: ${env.GIT_BRANCH}"
-        }
     }
-}
+    post {
+        success { echo "Success: ${env.GIT_BRANCH}" }
+        failure { echo "Failed: ${env.GIT_BRANCH}" }
+    }
 }
