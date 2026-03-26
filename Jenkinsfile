@@ -20,8 +20,6 @@ pipeline {
                 script {
                     def branch = env.GIT_BRANCH?.replaceAll('origin/', '').trim()
                     echo "Building branch: ${branch}"
-                    // Add your build commands here
-                    // e.g., sh 'npm install && npm run build'
                 }
             }
         }
@@ -31,8 +29,6 @@ pipeline {
                 script {
                     def branch = env.GIT_BRANCH?.replaceAll('origin/', '').trim()
                     echo "Running tests for branch: ${branch}"
-                    // Add your test commands here
-                    // e.g., sh 'npm test'
                 }
             }
         }
@@ -75,16 +71,6 @@ pipeline {
             }
         }
 
-        stage('Notify') {
-            steps {
-                script {
-                    def branch = env.GIT_BRANCH?.replaceAll('origin/', '').trim()
-                    echo "Pipeline completed for branch: ${branch}"
-                    // Add Slack/email notifications here
-                }
-            }
-        }
-    }
 
     post {
         success {
