@@ -14,42 +14,36 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def branch = env.GIT_BRANCH?.replaceAll('origin/', '').trim()
-                    echo "Building branch: ${branch}"
+                    echo "Building branch: ${env.BRANCH_NAME}"
                 }
             }
         }
         stage('Test') {
             steps {
                 script {
-                    def branch = env.GIT_BRANCH?.replaceAll('origin/', '').trim()
-                    echo "Running tests for branch: ${branch}"
+                    echo "Running tests for branch: ${env.BRANCH_NAME}"
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    def branch = env.GIT_BRANCH?.replaceAll('origin/', '').trim()
-                    echo "Detected branch: ${branch}"
-                    if (branch == 'main') {
-                        echo 'Deploying to MAIN environment...'
+                    echo "Deploying branch: ${env.BRANCH_NAME}"
+                    if (env.BRANCH_NAME == 'main') {
                         sh '''
                             sudo rm -rf /var/www/myapp/main/*
                             sudo cp -r * /var/www/myapp/main/
                         '''
                         echo 'Main branch deployed successfully!'
                     }
-                    else if (branch == 'dev') {
-                        echo 'Deploying to DEV environment...'
+                    else if (env.BRANCH_NAME == 'dev') {
                         sh '''
                             sudo rm -rf /var/www/myapp/dev/*
                             sudo cp -r * /var/www/myapp/dev/
                         '''
                         echo 'Dev branch deployed successfully!'
                     }
-                    else if (branch == 'feature') {
-                        echo 'Deploying to FEATURE environment...'
+                    else if (env.BRANCH_NAME == 'feature') {
                         sh '''
                             sudo rm -rf /var/www/myapp/feature/*
                             sudo cp -r * /var/www/myapp/feature/
@@ -57,14 +51,14 @@ pipeline {
                         echo 'Feature branch deployed successfully!'
                     }
                     else {
-                        echo "Branch '${branch}' is not configured for deployment. Skipping."
+                        echo "Branch '${env.BRANCH_NAME}' not configured. Skipping."
                     }
                 }
             }
         }
     }
     post {
-        success { echo "Success: ${env.GIT_BRANCH}" }
-        failure { echo "Failed: ${env.GIT_BRANCH}" }
+        success { echo "Success: ${env.BRANCH_NAME}" }
+        failure { echo "Failed: ${env.BRANCH_NAME}" }
     }
 }
