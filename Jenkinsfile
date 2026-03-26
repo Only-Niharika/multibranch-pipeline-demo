@@ -14,36 +14,39 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    echo "Building branch: ${env.BRANCH_NAME}"
+                    def branch = env.GIT_BRANCH?.replaceAll('origin/', '').trim()
+                    echo "Building branch: ${branch}"
                 }
             }
         }
         stage('Test') {
             steps {
                 script {
-                    echo "Running tests for branch: ${env.BRANCH_NAME}"
+                    def branch = env.GIT_BRANCH?.replaceAll('origin/', '').trim()
+                    echo "Running tests for branch: ${branch}"
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    echo "Deploying branch: ${env.BRANCH_NAME}"
-                    if (env.BRANCH_NAME == 'main') {
+                    def branch = env.GIT_BRANCH?.replaceAll('origin/', '').trim()
+                    echo "Deploying branch: ${branch}"
+                    if (branch == 'main') {
                         sh '''
                             sudo rm -rf /var/www/myapp/main/*
                             sudo cp -r * /var/www/myapp/main/
                         '''
                         echo 'Main deployed successfully!'
                     }
-                    else if (env.BRANCH_NAME == 'dev') {
+                    else if (branch == 'dev') {
                         sh '''
                             sudo rm -rf /var/www/myapp/dev/*
                             sudo cp -r * /var/www/myapp/dev/
                         '''
                         echo 'Dev deployed successfully!'
                     }
-                    else if (env.BRANCH_NAME == 'feature') {
+                    else if (branch == 'feature') {
                         sh '''
                             sudo rm -rf /var/www/myapp/feature/*
                             sudo cp -r * /var/www/myapp/feature/
@@ -51,14 +54,14 @@ pipeline {
                         echo 'Feature deployed successfully!'
                     }
                     else {
-                        echo "Branch '${env.BRANCH_NAME}' not configured. Skipping."
+                        echo "Branch '${branch}' not configured."
                     }
                 }
             }
         }
     }
     post {
-        success { echo "Success: ${env.BRANCH_NAME}" }
-        failure { echo "Failed: ${env.BRANCH_NAME}" }
+        success { echo "Success: ${env.GIT_BRANCH}" }
+        failure { echo "Failed: ${env.GIT_BRANCH}" }
     }
 }
