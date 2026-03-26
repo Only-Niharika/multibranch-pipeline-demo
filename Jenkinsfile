@@ -31,22 +31,22 @@ pipeline {
                     echo "Deploying branch: ${env.BRANCH_NAME}"
                     if (env.BRANCH_NAME == 'main') {
                         sh '''
-                            sudo rm -rf /var/www/html/myapp/main/*
-                            sudo cp -r * /var/www/html/myapp/main/
+                            sudo rm -rf /var/www/myapp/main/*
+                            sudo cp -r * /var/www/myapp/main/
                         '''
                         echo 'Main branch deployed successfully!'
                     }
                     else if (env.BRANCH_NAME == 'dev') {
                         sh '''
-                            sudo rm -rf /var/www/html/myapp/dev/*
-                            sudo cp -r * /var/www/html/myapp/dev/
+                            sudo rm -rf /var/www/myapp/dev/*
+                            sudo cp -r * /var/www/myapp/dev/
                         '''
                         echo 'Dev branch deployed successfully!'
                     }
                     else if (env.BRANCH_NAME == 'feature') {
                         sh '''
-                            sudo rm -rf /var/www/html/myapp/feature/*
-                            sudo cp -r * /var/www/html/myapp/feature/
+                            sudo rm -rf /var/www/myapp/feature/*
+                            sudo cp -r * /var/www/myapp/feature/
                         '''
                         echo 'Feature branch deployed successfully!'
                     }
