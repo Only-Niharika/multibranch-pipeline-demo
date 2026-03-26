@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-                deleteDir()
+                cleanWs()
             }
         }
         stage('Checkout') {
@@ -34,21 +34,21 @@ pipeline {
                             sudo rm -rf /var/www/myapp/main/*
                             sudo cp -r * /var/www/myapp/main/
                         '''
-                        echo 'Main branch deployed successfully!'
+                        echo 'Main deployed successfully!'
                     }
                     else if (env.BRANCH_NAME == 'dev') {
                         sh '''
                             sudo rm -rf /var/www/myapp/dev/*
                             sudo cp -r * /var/www/myapp/dev/
                         '''
-                        echo 'Dev branch deployed successfully!'
+                        echo 'Dev deployed successfully!'
                     }
                     else if (env.BRANCH_NAME == 'feature') {
                         sh '''
                             sudo rm -rf /var/www/myapp/feature/*
                             sudo cp -r * /var/www/myapp/feature/
                         '''
-                        echo 'Feature branch deployed successfully!'
+                        echo 'Feature deployed successfully!'
                     }
                     else {
                         echo "Branch '${env.BRANCH_NAME}' not configured. Skipping."
