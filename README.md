@@ -19,19 +19,19 @@ Whenever a change is pushed to any of the three branches, Jenkins picks it up an
 ## Screenshots
 
 ### GitHub Repository
-![GitHub Repo](screenshots/git_repo.png)
+![GitHub Repo](/git_repo.png)
 
 ### Jenkins Pipeline Stage View
-![Jenkins](screenshots/jenkins.png)
+![Jenkins](/jenkins.png)
 
 ### Production — main branch (Port 8081)
-![Production](screenshots/production.png)
+![Production](/production.png)
 
 ### Development — dev branch (Port 8082)
-![Development](screenshots/development.png)
+![Development](/development.png)
 
 ### Feature — feature branch (Port 8083)
-![Feature](screenshots/feature.png)
+![Feature](/feature.png)
 
 ---
 
