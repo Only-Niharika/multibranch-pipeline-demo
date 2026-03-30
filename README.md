@@ -50,13 +50,13 @@ Whenever a change is pushed to any of the three branches, Jenkins picks it up an
 
 All three branches have the same four files. The content and styling differ per branch so you can visually tell which environment you are looking at.
 
-`
+```
 repo/
 |-- index.html
 |-- style.css
 |-- app.js
 |-- Jenkinsfile
-`
+```
 
 The Jenkinsfile is identical across branches. Jenkins figures out which branch triggered the build using `env.GIT_BRANCH` and runs the correct deploy block.
 
@@ -78,7 +78,7 @@ There are five stages in the pipeline:
 
 Everything runs on a single EC2 instance. Here is what I set up on the server before running any pipeline:
 
- 
+ ```
 # Create the three deployment folders
 sudo mkdir -p /var/www/myapp/main
 sudo mkdir -p /var/www/myapp/dev
@@ -90,7 +90,7 @@ sudo chown -R jenkins:jenkins /var/www/myapp
 # Allow Jenkins to run sudo commands without a password prompt
 sudo visudo
 # Add at the bottom: jenkins ALL=(ALL) NOPASSWD: ALL
-
+```
 
 ---
 
@@ -100,16 +100,16 @@ By default Apache serves everything from `/var/www/html`. I changed this so each
 
 First, added the ports in `/etc/apache2/ports.conf`:
 
-`
+```
 Listen 80
 Listen 8081
 Listen 8082
 Listen 8083
-`
+```
 
 Then created a config file for each branch:
 
-`
+```
 # /etc/apache2/sites-available/main.conf
 <VirtualHost *:8081>
     DocumentRoot /var/www/myapp/main
@@ -139,14 +139,14 @@ Then created a config file for each branch:
         Require all granted
     </Directory>
 </VirtualHost>
-`
+```
 
 Enabled the sites and restarted Apache:
 
-`
+```
 sudo a2ensite main.conf dev.conf feature.conf
 sudo systemctl restart apache2
-`
+```
 
 Also opened ports 8081, 8082, 8083 in the AWS Security Group inbound rules.
 
@@ -158,13 +158,13 @@ I created three separate Pipeline jobs in Jenkins — one for each branch. Using
 
 For each job the configuration is:
 
-`
+```
 Definition  : Pipeline script from SCM
 SCM         : Git
 Repo URL    : https://github.com/Only-Niharika/multibranch-pipeline-demo.git
 Branch      : */main   (change to */dev and */feature for the other two jobs)
 Script Path : Jenkinsfile
-`
+```
 
 ---
 
